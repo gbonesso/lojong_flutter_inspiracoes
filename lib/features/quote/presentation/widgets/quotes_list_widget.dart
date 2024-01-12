@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/presentation/providers/article_provider.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/presentation/widgets/article_card.dart';
+import 'package:lojong_flutter_inspiracoes/features/quote/presentation/providers/quote_provider.dart';
+import 'package:lojong_flutter_inspiracoes/features/quote/presentation/widgets/quote_card.dart';
 import 'package:provider/provider.dart';
 
 final log = Logger('Logger');
 
-class ArticlesListWidget extends StatelessWidget {
-  //final UserProfileModel userProfile;
-  const ArticlesListWidget({
+class QuotesListWidget extends StatelessWidget {
+  const QuotesListWidget({
     super.key,
-    //required this.userProfile,
   });
 
   //Color(0xFFE09090)
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ArticleProvider>(
-        builder: (context, articleProvider, child) {
-      if (articleProvider.articlesPage != null) {
+    return Consumer<QuoteProvider>(builder: (context, quoteProvider, child) {
+      if (quoteProvider.quotesPage != null) {
         return Column(
           children: [
             Expanded(
@@ -28,10 +25,9 @@ class ArticlesListWidget extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      for (final article
-                          in articleProvider.articlesPage!.articlesList)
-                        ArticleCard(
-                          article: article,
+                      for (final quote in quoteProvider.quotesPage!.quotesList)
+                        QuoteCard(
+                          quote: quote,
                         )
                     ],
                   ),

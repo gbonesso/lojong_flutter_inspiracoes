@@ -1,20 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/business/entities/articles_page_entity.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/business/repositories/article_repository.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/data/datasources/article_remote_data_source.dart';
+import 'package:lojong_flutter_inspiracoes/features/video/business/repositories/video_repository.dart';
+import 'package:lojong_flutter_inspiracoes/features/video/data/datasource/video_remote_data_source.dart';
+import 'package:lojong_flutter_inspiracoes/features/video/data/models/video_model.dart';
 
-class ArticleRepositoryImpl implements ArticleRepository {
-  final ArticleRemoteDataSource remoteDataSource;
+class VideoRepositoryImpl implements VideoRepository {
+  final VideoRemoteDataSource remoteDataSource;
 
-  //final PokemonLocalDataSource localDataSource;
-
-  //final NetworkInfo networkInfo;
-
-  ArticleRepositoryImpl({
+  VideoRepositoryImpl({
     required this.remoteDataSource,
-    //required this.localDataSource,
-    //required this.networkInfo,
   });
 
   // Either is implemented in the dartz package
@@ -43,11 +37,11 @@ class ArticleRepositoryImpl implements ArticleRepository {
   // }
 
   @override
-  Future<Either<Failure, ArticlesPageEntity>> getArticlesPage({
+  Future<Either<Failure, List<VideoModel>>> getVideoList({
     required int page,
   }) async {
-    final articlesPage = await remoteDataSource.getArticlesPage(page: page);
-    return Right(articlesPage as ArticlesPageEntity);
+    final videoList = await remoteDataSource.getVideoList(page: page);
+    return Right(videoList);
     //return Left(ServerFailure(errorMessage: 'This is a server exception'));
   }
 }

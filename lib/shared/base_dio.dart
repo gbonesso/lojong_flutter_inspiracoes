@@ -21,7 +21,11 @@ class BaseDio {
 
       var cacheOptions = CacheOptions(
         store: cacheStore,
-        hitCacheOnErrorExcept: [], // for offline behaviour
+        //hitCacheOnErrorExcept: [], // for offline behaviour
+        // Overrides any HTTP directive to delete entry past this duration.
+        // Useful only when origin server has no cache config or custom behaviour is desired.
+        // Defaults to [null].
+        maxStale: const Duration(days: 7),
       );
 
       dio.interceptors.add(
