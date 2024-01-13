@@ -20,7 +20,13 @@ dependencies:
   google_fonts: ^6.1.0
   logging: ^1.2.0
   path_provider: ^2.1.2
+  pod_player: ^0.2.1
   provider: ^6.1.1
+  #vimeo_video_player: ^0.0.10
+  #vimeo_player_flutter: ^0.1.0
+  #youtube_player_flutter: ^8.1.2
+  #youtube_player_iframe: ^4.0.4
+  #youtube_player_flutter: ^8.1.2
 
 dev_dependencies:
   flutter_test:

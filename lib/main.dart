@@ -58,12 +58,12 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    Provider.of<ArticleProvider>(context, listen: false)
-        .eitherFailureOrArticleList(page: 1);
+    // Provider.of<ArticleProvider>(context, listen: false)
+    //     .eitherFailureOrArticleList(page: 1);
     Provider.of<VideoProvider>(context, listen: false)
         .eitherFailureOrVideoList(page: 1);
-    Provider.of<QuoteProvider>(context, listen: false)
-        .eitherFailureOrQuotesPage(page: 1);
+    // Provider.of<QuoteProvider>(context, listen: false)
+    //     .eitherFailureOrQuotesPage(page: 1);
   }
 
   @override

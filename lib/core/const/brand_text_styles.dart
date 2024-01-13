@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
 
 class BrandTextStyles {
   static final unselectedButton = GoogleFonts.asap(
@@ -12,7 +13,7 @@ class BrandTextStyles {
   static final selectedButton = GoogleFonts.asap(
     textStyle: const TextStyle(
       //color: Color(0xFFE09090),
-      color: Color.fromARGB(0xFF, 196, 119, 118),
+      color: BrandColors.inspirationBackGroundDarker,
       fontWeight: FontWeight.w700,
       fontSize: 14,
     ),

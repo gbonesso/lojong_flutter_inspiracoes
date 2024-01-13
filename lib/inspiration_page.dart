@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
-import 'package:lojong_flutter_inspiracoes/core/const/text_styles.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/widgets/articles_list_widget.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/widgets/quotes_list_widget.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/widgets/articles_list_widget.dart';
@@ -35,7 +36,8 @@ class _InspirationPageState extends State<InspirationPage> {
       body: Column(
         children: [
           Container(
-            color: Color(0xFFE09090),
+            //color: Color(0xFFE09090),
+            color: BrandColors.inspirationBackGround,
             height: 110,
             child: Column(children: [
               Padding(

@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/business/entities/video_entity.dart';
+import 'package:lojong_flutter_inspiracoes/shared/vimeo_player_page.dart';
 
 final log = Logger('Logger');
 
@@ -46,19 +48,44 @@ class VideoCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 8,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: CachedNetworkImage(
-                    imageUrl: video.imageUrl,
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    // progressIndicatorBuilder:
-                    //     (context, url, downloadProgress) =>
-                    //         CircularProgressIndicator(
-                    //             value: downloadProgress.progress),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                child: Stack(children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CachedNetworkImage(
+                      imageUrl: video.imageUrl,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      // progressIndicatorBuilder:
+                      //     (context, url, downloadProgress) =>
+                      //         CircularProgressIndicator(
+                      //             value: downloadProgress.progress),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                   ),
-                  //child: Image.network(article.imageUrl),
-                ),
+                  Positioned.fill(
+                    child: InkWell(
+                      onTap: () {
+                        log.info('play vídeo... ${video.url}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VimeoPlayerPage(
+                                    videoUrl: video.url,
+                                    videoTitle: video.name,
+                                  )),
+                        );
+                      },
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/svg/play_video.svg',
+                          height: 60,
+                          width: 60,
+                        ),
+                      ),
+                    ),
+                  )
+                ]),
               ),
             ),
             Padding(

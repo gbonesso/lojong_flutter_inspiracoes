@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lojong_flutter_inspiracoes/core/const/text_styles.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
 
 // TODO: Otimizar
 // ignore: must_be_immutable
@@ -24,7 +25,8 @@ class _SectionSelectionWidgetState extends State<SectionSelectionWidget> {
       borderRadius: BorderRadius.circular(20),
       child: Container(
         height: 40,
-        color: Color.fromARGB(0xFF, 196, 119, 118),
+        //color: Color.fromARGB(0xFF, 196, 119, 118),
+        color: BrandColors.inspirationBackGroundDarker,
         child: Padding(
           padding: const EdgeInsets.only(left: 5.0, right: 5),
           child: Row(children: [
