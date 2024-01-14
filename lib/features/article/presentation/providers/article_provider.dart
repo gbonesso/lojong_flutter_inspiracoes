@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/business/entities/article_content_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/business/entities/article_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/business/entities/articles_page_entity.dart';
@@ -12,6 +13,7 @@ class ArticleProvider extends ChangeNotifier {
   ArticlesPageEntity? articlesPage;
   List<ArticleEntity> articleList = [];
   bool error = false;
+  Failure? failure;
   ArticleContentEntity? articleContent;
 
   void eitherFailureOrArticlesPage({
@@ -28,9 +30,13 @@ class ArticleProvider extends ChangeNotifier {
 
     failureOrArticleList.fold(
       (newFailure) {
+        error = true;
+        failure = newFailure;
         notifyListeners();
       },
       (newArticlesPage) {
+        error = false;
+        failure = null;
         articlesPage = newArticlesPage;
         //articleList.addAll(articlesPage!.articlesList);
         for (final article in articlesPage!.articlesList) {
@@ -65,9 +71,13 @@ class ArticleProvider extends ChangeNotifier {
 
     failureOrArticleContent.fold(
       (newFailure) {
+        error = true;
+        failure = newFailure;
         notifyListeners();
       },
       (newArticleContent) {
+        error = false;
+        failure = null;
         articleContent = newArticleContent;
         notifyListeners();
       },

@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/providers/article_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/widgets/article_card.dart';
 import 'package:lojong_flutter_inspiracoes/shared/widget/error_dialog.dart';
+import 'package:lojong_flutter_inspiracoes/shared/widget/no_conectivity_widget.dart';
 import 'package:provider/provider.dart';
 
 final log = Logger('Logger');
@@ -28,6 +29,18 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
   Widget build(BuildContext context) {
     return Consumer<ArticleProvider>(
         builder: (context, articleProvider, child) {
+      if (articleProvider.error) {
+        if (articleProvider.failure != null) {
+          if (articleProvider.failure!.errorMessage == "Sem conectividade") {
+            return NoConectivityWidget(onTap: () {
+              setState(() {
+                Provider.of<ArticleProvider>(context, listen: false)
+                    .eitherFailureOrArticlesPage(page: 1);
+              });
+            });
+          }
+        }
+      }
       if (articleProvider.articlesPage != null) {
         return Column(
           children: [
@@ -56,7 +69,9 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
                     }
                   }
                   return ArticleCard(
-                      article: articleProvider.articleList[index]);
+                    article: articleProvider.articleList[index],
+                    index: index,
+                  );
                 },
               ),
               // child: ListView(

@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/providers/video_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/widgets/video_card.dart';
 import 'package:lojong_flutter_inspiracoes/shared/widget/error_dialog.dart';
+import 'package:lojong_flutter_inspiracoes/shared/widget/no_conectivity_widget.dart';
 import 'package:provider/provider.dart';
 
 final log = Logger('Logger');
@@ -28,6 +29,18 @@ class _VideoListWidgetState extends State<VideoListWidget> {
   Widget build(BuildContext context) {
     log.info('_VideoListWidgetState::build...');
     return Consumer<VideoProvider>(builder: (context, videoProvider, child) {
+      if (videoProvider.error) {
+        if (videoProvider.failure != null) {
+          if (videoProvider.failure!.errorMessage == "Sem conectividade") {
+            return NoConectivityWidget(onTap: () {
+              setState(() {
+                Provider.of<VideoProvider>(context, listen: false)
+                    .eitherFailureOrVideoList(page: 1);
+              });
+            });
+          }
+        }
+      }
       if (videoProvider.videoList.isNotEmpty) {
         return Column(
           children: [
@@ -36,6 +49,7 @@ class _VideoListWidgetState extends State<VideoListWidget> {
                 itemCount: videoProvider.videoList.length,
                 itemBuilder: (context, index) {
                   log.info('video - building index: $index');
+
                   // Chegando próximo ao final da lista, buscar mais videos
                   if (index == videoProvider.videoList.length - 5) {
                     videoProvider.eitherFailureOrVideoList(
@@ -52,20 +66,12 @@ class _VideoListWidgetState extends State<VideoListWidget> {
                       ));
                     }
                   }
-                  return VideoCard(video: videoProvider.videoList[index]);
+                  return VideoCard(
+                    video: videoProvider.videoList[index],
+                    index: index,
+                  );
                 },
               ),
-              // child: ListView(
-              //   //crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Column(
-              //       children: [
-              //         for (final video in videoProvider.videoList!)
-              //           VideoCard(video: video)
-              //       ],
-              //     ),
-              //   ],
-              // ),
             ),
           ],
         );

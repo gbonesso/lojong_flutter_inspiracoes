@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
+import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/data/models/article_content_model.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/data/models/article_model.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/data/models/articles_page_model.dart';
@@ -49,10 +51,27 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
           articlesList: articlesList,
         );
       } else {
-        //throw ServerException();
+        throw ServerFailure(
+            errorMessage: 'status_code: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      log.info(e);
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        log.info('Sem conectividade...');
+        throw ServerFailure(errorMessage: 'Sem conectividade');
+      }
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        log.info(e.response!.data);
+        log.info(e.response!.headers);
+        log.info(e.response!.requestOptions);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        log.info(e.requestOptions);
+        log.info(e.message);
+      }
+      throw ServerFailure(errorMessage: 'Erro: ${e.message}');
     }
 
     return Future.value(articlesPageModel);
@@ -75,10 +94,27 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
         articleContent = ArticleContentModel.fromJson(response.data);
         log.fine(articleContent.toJson());
       } else {
-        //throw ServerException();
+        throw ServerFailure(
+            errorMessage: 'status_code: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      log.info(e);
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        log.info('Sem conectividade...');
+        throw ServerFailure(errorMessage: 'Sem conectividade');
+      }
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        log.info(e.response!.data);
+        log.info(e.response!.headers);
+        log.info(e.response!.requestOptions);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        log.info(e.requestOptions);
+        log.info(e.message);
+      }
+      throw ServerFailure(errorMessage: 'Erro: ${e.message}');
     }
 
     return Future.value(articleContent);

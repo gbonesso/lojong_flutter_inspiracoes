@@ -14,8 +14,12 @@ class QuoteRepositoryImpl implements QuoteRepository {
   Future<Either<Failure, QuotesPageEntity>> getQuotesPage({
     required int page,
   }) async {
-    final quotesPage = await remoteDataSource.getQuotesPage(page: page);
-    return Right(quotesPage as QuotesPageEntity);
-    //return Left(ServerFailure(errorMessage: 'This is a server exception'));
+    try {
+      final quotesPage = await remoteDataSource.getQuotesPage(page: page);
+      return Right(quotesPage);
+    } on ServerFailure catch (failure) {
+      log.info('getQuotesPage: ServerFailure: ${failure.errorMessage}');
+      return Left(failure);
+    }
   }
 }

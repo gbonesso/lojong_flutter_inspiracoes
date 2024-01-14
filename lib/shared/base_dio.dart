@@ -1,8 +1,6 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_file_store/dio_cache_interceptor_file_store.dart';
-import 'package:lojong_flutter_inspiracoes/shared/conectivity_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BaseDio {
@@ -52,34 +50,4 @@ class BaseDio {
       ),
     );
   }
-
-  // Dio getDio() {
-  //   Dio dio = Dio();
-
-  //   late CacheStore cacheStore;
-
-  //   getTemporaryDirectory().then((dir) {
-  //     cacheStore = FileCacheStore(dir.path);
-
-  //     var cacheOptions = CacheOptions(
-  //       store: cacheStore,
-  //       hitCacheOnErrorExcept: [], // for offline behaviour
-  //     );
-
-  //     dio.interceptors.add(
-  //       DioCacheInterceptor(options: cacheOptions),
-  //     );
-  //   });
-
-  //   dio.interceptors.add(
-  //     InterceptorsWrapper(
-  //       onRequest: (options, handler) {
-  //         // Add the access token to the request header
-  //         options.headers['Authorization'] = 'Bearer $_userToken';
-  //         return handler.next(options);
-  //       },
-  //     ),
-  //   );
-  //   return dio;
-  // }
 }

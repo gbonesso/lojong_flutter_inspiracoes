@@ -1,5 +1,7 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:logging/logging.dart';
+import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/data/models/quote_model.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/data/models/quotes_page_model.dart';
 
@@ -49,9 +51,15 @@ class QuoteRemoteDataSourceImpl implements QuoteRemoteDataSource {
           quotesList: quotesList,
         );
       } else {
-        //throw ServerException();
+        throw ServerFailure(
+            errorMessage: 'status_code: ${response.statusCode}');
       }
     } on DioException catch (e) {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        log.info('Sem conectividade...');
+        throw ServerFailure(errorMessage: 'Sem conectividade');
+      }
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
@@ -63,6 +71,7 @@ class QuoteRemoteDataSourceImpl implements QuoteRemoteDataSource {
         log.info(e.requestOptions);
         log.info(e.message);
       }
+      throw ServerFailure(errorMessage: 'Erro: ${e.message}');
     }
 
     return Future.value(quotesPageModel);

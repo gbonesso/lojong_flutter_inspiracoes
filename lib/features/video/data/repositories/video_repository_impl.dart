@@ -50,6 +50,5 @@ class VideoRepositoryImpl implements VideoRepository {
       log.info('getVideoList: ServerFailure: ${failure.errorMessage}');
       return Left(failure);
     }
-    //return Left(ServerFailure(errorMessage: 'This is a server exception'));
   }
 }

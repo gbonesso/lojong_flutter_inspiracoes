@@ -47,16 +47,25 @@ class ArticleRepositoryImpl implements ArticleRepository {
   Future<Either<Failure, ArticlesPageEntity>> getArticlesPage({
     required int page,
   }) async {
-    final articlesPage = await remoteDataSource.getArticlesPage(page: page);
-    return Right(articlesPage as ArticlesPageEntity);
-    //return Left(ServerFailure(errorMessage: 'This is a server exception'));
+    try {
+      final articlesPage = await remoteDataSource.getArticlesPage(page: page);
+      return Right(articlesPage as ArticlesPageEntity);
+    } on ServerFailure catch (failure) {
+      log.info('getArticlesPage: ServerFailure: ${failure.errorMessage}');
+      return Left(failure);
+    }
   }
 
   @override
   Future<Either<Failure, ArticleContentEntity>> getArticleContent(
       {required int articleId}) async {
-    final articleContent =
-        await remoteDataSource.getArticleContent(articleId: articleId);
-    return Right(articleContent as ArticleContentEntity);
+    try {
+      final articleContent =
+          await remoteDataSource.getArticleContent(articleId: articleId);
+      return Right(articleContent as ArticleContentEntity);
+    } on ServerFailure catch (failure) {
+      log.info('getArticleContent: ServerFailure: ${failure.errorMessage}');
+      return Left(failure);
+    }
   }
 }

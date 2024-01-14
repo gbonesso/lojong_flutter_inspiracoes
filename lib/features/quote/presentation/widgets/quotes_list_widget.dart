@@ -3,6 +3,7 @@ import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/providers/quote_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/widgets/quote_card.dart';
 import 'package:lojong_flutter_inspiracoes/shared/widget/error_dialog.dart';
+import 'package:lojong_flutter_inspiracoes/shared/widget/no_conectivity_widget.dart';
 import 'package:provider/provider.dart';
 
 final log = Logger('Logger');
@@ -27,6 +28,18 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<QuoteProvider>(builder: (context, quoteProvider, child) {
+      if (quoteProvider.error) {
+        if (quoteProvider.failure != null) {
+          if (quoteProvider.failure!.errorMessage == "Sem conectividade") {
+            return NoConectivityWidget(onTap: () {
+              setState(() {
+                Provider.of<QuoteProvider>(context, listen: false)
+                    .eitherFailureOrQuotesPage(page: 1);
+              });
+            });
+          }
+        }
+      }
       if (quoteProvider.quotesPage != null) {
         return Column(
           children: [

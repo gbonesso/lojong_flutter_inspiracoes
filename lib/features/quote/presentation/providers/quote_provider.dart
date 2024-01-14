@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/entities/quote_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/entities/quotes_page_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/usecases/get_quotes_page.dart';
@@ -10,13 +11,13 @@ class QuoteProvider extends ChangeNotifier {
   QuotesPageEntity? quotesPage;
   List<QuoteEntity> quoteList = [];
   bool error = false;
+  Failure? failure;
 
   void eitherFailureOrQuotesPage({
     required int page,
   }) async {
     QuoteRepositoryImpl repository = QuoteRepositoryImpl(
       remoteDataSource: QuoteRemoteDataSourceImpl(dio: BaseDio().dio),
-      //networkInfo: NetworkInfoImpl(DataConnectionChecker()),
     );
 
     final failureOrQuotesPage = await GetQuotesPage(repository).call(
@@ -25,9 +26,13 @@ class QuoteProvider extends ChangeNotifier {
 
     failureOrQuotesPage.fold(
       (newFailure) {
+        error = true;
+        failure = newFailure;
         notifyListeners();
       },
       (newQuotesPage) {
+        error = false;
+        failure = null;
         quotesPage = newQuotesPage;
         for (final quote in quotesPage!.quotesList) {
           log.info('quote: ${quotesPage!.currentPage} - ${quote.id}');
@@ -41,7 +46,6 @@ class QuoteProvider extends ChangeNotifier {
           }
         }
 
-        //quoteList.addAll(quotesPage!.quotesList);
         notifyListeners();
       },
     );

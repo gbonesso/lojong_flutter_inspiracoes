@@ -57,7 +57,7 @@ class _InspirationPageState extends State<InspirationPage> {
                     ),
                     Expanded(
                       child: Text(
-                        'INSPIRAÇÔES',
+                        'INSPIRAÇÕES',
                         textAlign: TextAlign.center,
                         style: BrandTextStyles.unselectedButton,
                       ),

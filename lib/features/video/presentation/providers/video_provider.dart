@@ -22,7 +22,6 @@ class VideoProvider extends ChangeNotifier {
 
     VideoRepositoryImpl repository = VideoRepositoryImpl(
       remoteDataSource: VideoRemoteDataSourceImpl(dio: BaseDio().dio),
-      //networkInfo: NetworkInfoImpl(DataConnectionChecker()),
     );
 
     final failureOrVideoList = await GetVideoList(repository).call(
@@ -38,6 +37,8 @@ class VideoProvider extends ChangeNotifier {
         notifyListeners();
       },
       (newVideoList) {
+        error = false;
+        failure = null;
         for (final video in newVideoList) {
           log.info('video: ${video.id}');
           // Check for duplicates

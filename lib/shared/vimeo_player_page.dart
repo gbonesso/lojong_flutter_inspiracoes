@@ -1,8 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
 import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
+import 'package:lojong_flutter_inspiracoes/shared/widget/no_conectivity_widget.dart';
 import 'package:pod_player/pod_player.dart';
 
 final log = Logger('Logger');
@@ -22,6 +24,7 @@ class VimeoPlayerPage extends StatefulWidget {
 
 class _VimeoPlayerPageState extends State<VimeoPlayerPage> {
   late final PodPlayerController controller;
+  bool noConnection = false;
 
   @override
   void initState() {
@@ -29,16 +32,20 @@ class _VimeoPlayerPageState extends State<VimeoPlayerPage> {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.vimeo(videoId),
     )..initialise();
+    checkConnection();
     super.initState();
+  }
+
+  void checkConnection() async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    noConnection = (connectivityResult == ConnectivityResult.none);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //     //title: Text(widget.title),
-        //     ),
         body: Column(children: [
           Expanded(
               flex: 1,
@@ -79,15 +86,19 @@ class _VimeoPlayerPageState extends State<VimeoPlayerPage> {
               )),
           Expanded(
             flex: 9,
-            child: Container(
-              color: BrandColors.inspirationBackGround,
-              child: PodVideoPlayer(
-                controller: controller,
-                //videoAspectRatio: 9 / 16,
-                matchVideoAspectRatioToFrame: true,
-                matchFrameAspectRatioToVideo: true,
-              ),
-            ),
+            child: noConnection
+                ? NoConectivityWidget(onTap: () {
+                    checkConnection();
+                  })
+                : Container(
+                    color: BrandColors.inspirationBackGround,
+                    child: PodVideoPlayer(
+                      controller: controller,
+                      //videoAspectRatio: 9 / 16,
+                      matchVideoAspectRatioToFrame: true,
+                      matchFrameAspectRatioToVideo: true,
+                    ),
+                  ),
           ),
         ]),
         // This trailing comma makes auto-formatting nicer for build methods.
