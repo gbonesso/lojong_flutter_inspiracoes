@@ -29,7 +29,7 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
   Widget build(BuildContext context) {
     return Consumer<ArticleProvider>(
         builder: (context, articleProvider, child) {
-      if (articleProvider.error) {
+      if (articleProvider.error && articleProvider.lastPageRequested == 1) {
         if (articleProvider.failure != null) {
           if (articleProvider.failure!.errorMessage == "Sem conectividade") {
             return NoConectivityWidget(onTap: () {
@@ -59,7 +59,14 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
                   }
                   if (index == articleProvider.articleList.length) {
                     if (articleProvider.error) {
-                      return const Center(child: ErrorDialog());
+                      return Center(
+                        child: ErrorDialog(
+                          onTap: () {
+                            articleProvider.eitherFailureOrArticlesPage(
+                                page: articleProvider.lastPageRequested);
+                          },
+                        ),
+                      );
                     } else {
                       return const Center(
                           child: Padding(
@@ -74,20 +81,6 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
                   );
                 },
               ),
-              // child: ListView(
-              //   //crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Column(
-              //       children: [
-              //         for (final article
-              //             in articleProvider.articlesPage!.articlesList)
-              //           ArticleCard(
-              //             article: article,
-              //           )
-              //       ],
-              //     ),
-              //   ],
-              // ),
             ),
           ],
         );

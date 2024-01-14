@@ -1,3 +1,4 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_file_store/dio_cache_interceptor_file_store.dart';
@@ -49,5 +50,7 @@ class BaseDio {
         },
       ),
     );
+
+    dio.interceptors.add(ChuckerDioInterceptor());
   }
 }

@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
 import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/entities/quote_entity.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg;
@@ -71,90 +70,87 @@ class QuoteCard extends StatelessWidget {
     ];
 
     return Center(
-      child: Container(
-        color: BrandColors.inspirationBackGround,
-        child: Card(
-          elevation: 0,
-          margin: EdgeInsets.zero,
-          shape: index == 0
-              ? const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                )
-              : const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(0)),
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: index == 0
+            ? const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
+              )
+            : const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(0)),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: gradientToUse[index % 3],
-                      image: DecorationImage(
-                        //scale: 0.8,
-                        //fit: BoxFit.scaleDown,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.1), BlendMode.dstIn),
-                        image: imageToUse[index % 3],
-                      ),
+        child: Padding(
+          padding: EdgeInsets.all(useMobileLayout ? 8 : 20),
+          child: Card(
+            elevation: useMobileLayout ? 5 : 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: gradientToUse[index % 3],
+                    image: DecorationImage(
+                      //scale: 0.8,
+                      //fit: BoxFit.scaleDown,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.1), BlendMode.dstIn),
+                      image: imageToUse[index % 3],
                     ),
-                    child: Column(children: [
-                      // Texto
-                      Expanded(
-                        flex: 75,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: AutoSizeText(
-                              quote.text,
-                              minFontSize: 10,
-                              textAlign: TextAlign.center,
-                              style: fontStyleToUse[index % 3]
-                                  .copyWith(fontSize: 30),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      // Autor
-                      Expanded(
-                        flex: 15,
+                  ),
+                  child: Column(children: [
+                    // Texto
+                    Expanded(
+                      flex: 75,
+                      child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: AutoSizeText(
-                            quote.author,
+                            quote.text,
                             minFontSize: 10,
                             textAlign: TextAlign.center,
                             style: fontStyleToUse[index % 3]
-                                .copyWith(fontSize: 25),
+                                .copyWith(fontSize: 30),
                           ),
                         ),
                       ),
-                      // Botão para compartilhar
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15.0),
-                        child: SizedBox(
-                          height: useMobileLayout ? 30 : 50,
-                          child: ShareButton(
-                            backgroundColor:
-                                backgroundColorShareButton[index % 3],
-                            textColor: Colors.white,
-                          ),
+                    ),
+
+                    // Autor
+                    Expanded(
+                      flex: 15,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: AutoSizeText(
+                          quote.author,
+                          minFontSize: 10,
+                          textAlign: TextAlign.center,
+                          style:
+                              fontStyleToUse[index % 3].copyWith(fontSize: 25),
                         ),
                       ),
-                    ]),
-                  ),
+                    ),
+                    // Botão para compartilhar
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: SizedBox(
+                        height: useMobileLayout ? 30 : 50,
+                        child: ShareButton(
+                          backgroundColor:
+                              backgroundColorShareButton[index % 3],
+                          textColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
               ),
             ),

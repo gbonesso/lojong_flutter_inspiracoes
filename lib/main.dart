@@ -1,14 +1,14 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:lojong_flutter_inspiracoes/features/article/data/datasources/article_remote_data_source.dart';
-import 'package:lojong_flutter_inspiracoes/features/quote/data/datasource/quote_remote_data_source.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/providers/quote_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/providers/video_provider.dart';
 import 'package:lojong_flutter_inspiracoes/inspiration_page.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/providers/article_provider.dart';
-import 'package:lojong_flutter_inspiracoes/shared/base_dio.dart';
 import 'package:provider/provider.dart';
+import 'dart:io' show Platform;
 
 final log = Logger('Logger');
 
@@ -26,6 +26,11 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
 
+  // Para debugar no meu iPhone...
+  if (Platform.isIOS) {
+    ChuckerFlutter.showOnRelease = true;
+  }
+
   runApp(
     MultiProvider(
       providers: [
@@ -39,11 +44,10 @@ void main() {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
+          scaffoldBackgroundColor: BrandColors.inspirationBackGround,
         ),
         home: const MainApp(),
-        // routes: {
-        //   '/login': (context) => const LoginPage(),
-        // },
+        navigatorObservers: [ChuckerFlutter.navigatorObserver],
       ),
     ),
   );
@@ -66,51 +70,13 @@ class _MainAppState extends State<MainApp> {
           children: [
             ElevatedButton.icon(
               icon: const Icon(Icons.visibility),
-              label: Text('Inspirações'),
+              label: const Text('Teste Inspirações - Lojong'),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const InspirationPage()),
                 );
-              },
-            ),
-            // ElevatedButton.icon(
-            //   icon: const Icon(Icons.visibility),
-            //   label: Text('getVideoList'),
-            //   onPressed: () async {
-            //     final videoRemoteDataSource =
-            //         VideoRemoteDataSourceImpl(dio: BaseDio().dio);
-
-            //     final videoList =
-            //         await videoRemoteDataSource.getVideoList(page: 1);
-            //     log.info(videoList);
-            //   },
-            // ),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.visibility),
-              label: Text('getQuoteList'),
-              onPressed: () async {
-                log.info('getQuoteList Button pressed...');
-                final quoteRemoteDataSource =
-                    QuoteRemoteDataSourceImpl(dio: BaseDio().dio);
-
-                final quotesPage =
-                    await quoteRemoteDataSource.getQuotesPage(page: 1);
-                log.info(quotesPage.toJson());
-              },
-            ),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.visibility),
-              label: Text('getArticleContent'),
-              onPressed: () async {
-                log.info('getArticleContent Button pressed...');
-                final articleRemoteDataSource =
-                    ArticleRemoteDataSourceImpl(dio: BaseDio().dio);
-
-                final articleContent = await articleRemoteDataSource
-                    .getArticleContent(articleId: 11);
-                log.info(articleContent!.toJson());
               },
             ),
           ],

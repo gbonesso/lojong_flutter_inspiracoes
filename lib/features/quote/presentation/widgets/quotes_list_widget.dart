@@ -49,7 +49,8 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
                   itemCount: quoteProvider.quoteList.length +
                       (quoteProvider.quotesPage!.hasMore ? 1 : 0),
                   itemBuilder: (context, index) {
-                    log.info('building index: $index');
+                    log.info(
+                        'quote: building index: $index - page: ${quoteProvider.quotesPage!.currentPage}');
                     // Chegando próximo ao final da lista, buscar mais citações
                     if (index == quoteProvider.quoteList.length - 5) {
                       quoteProvider.eitherFailureOrQuotesPage(
@@ -57,7 +58,14 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
                     }
                     if (index == quoteProvider.quoteList.length) {
                       if (quoteProvider.error) {
-                        return Center(child: ErrorDialog());
+                        return Center(
+                          child: ErrorDialog(
+                            onTap: () {
+                              quoteProvider.eitherFailureOrQuotesPage(
+                                  page: quoteProvider.lastPageRequested);
+                            },
+                          ),
+                        );
                       } else {
                         return const Center(
                             child: Padding(
@@ -73,19 +81,6 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
                   },
                 ),
               ),
-              // child: ListView(
-              //   //crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     Column(
-              //       children: [
-              //         for (final quote in quoteProvider.quotesPage!.quotesList)
-              //           QuoteCard(
-              //             quote: quote,
-              //           )
-              //       ],
-              //     ),
-              //   ],
-              // ),
             ),
           ],
         );

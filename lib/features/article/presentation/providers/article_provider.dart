@@ -15,10 +15,12 @@ class ArticleProvider extends ChangeNotifier {
   bool error = false;
   Failure? failure;
   ArticleContentEntity? articleContent;
+  int lastPageRequested = 1;
 
   void eitherFailureOrArticlesPage({
     required int page,
   }) async {
+    lastPageRequested = page;
     ArticleRepositoryImpl repository = ArticleRepositoryImpl(
       remoteDataSource: ArticleRemoteDataSourceImpl(dio: BaseDio().dio),
       //networkInfo: NetworkInfoImpl(DataConnectionChecker()),

@@ -52,12 +52,19 @@ class _VideoListWidgetState extends State<VideoListWidget> {
 
                   // Chegando próximo ao final da lista, buscar mais videos
                   if (index == videoProvider.videoList.length - 5) {
-                    videoProvider.eitherFailureOrVideoList(
-                        page: videoProvider.actualPage + 1);
+                    // Não fazer mais busca de vídeos, só existe uma página de vídeos
+                    // videoProvider.eitherFailureOrVideoList(
+                    //     page: videoProvider.actualPage + 1);
                   }
                   if (index == videoProvider.videoList.length) {
                     if (videoProvider.error) {
-                      return const Center(child: ErrorDialog());
+                      return Center(
+                        child: ErrorDialog(
+                          onTap: () {
+                            videoProvider.eitherFailureOrVideoList(page: 1);
+                          },
+                        ),
+                      );
                     } else {
                       return const Center(
                           child: Padding(

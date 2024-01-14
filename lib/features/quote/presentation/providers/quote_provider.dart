@@ -12,10 +12,12 @@ class QuoteProvider extends ChangeNotifier {
   List<QuoteEntity> quoteList = [];
   bool error = false;
   Failure? failure;
+  int lastPageRequested = 1;
 
   void eitherFailureOrQuotesPage({
     required int page,
   }) async {
+    lastPageRequested = page;
     QuoteRepositoryImpl repository = QuoteRepositoryImpl(
       remoteDataSource: QuoteRemoteDataSourceImpl(dio: BaseDio().dio),
     );

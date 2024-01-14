@@ -47,32 +47,28 @@ class _ArticleContentPageState extends State<ArticleContentPage> {
         body: Column(children: [
           Expanded(
               flex: 1,
-              child: Container(
-                color: BrandColors.inspirationBackGround,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 10.0, right: 10, top: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: SvgPicture.asset(
-                                  'assets/svg/back_lojong.svg')),
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 10, top: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child:
+                                SvgPicture.asset('assets/svg/back_lojong.svg')),
                       ),
-                      const Expanded(
-                        flex: 8,
-                        child: Center(),
-                      ),
-                      const Expanded(flex: 1, child: Center()),
-                    ],
-                  ),
+                    ),
+                    const Expanded(
+                      flex: 8,
+                      child: Center(),
+                    ),
+                    const Expanded(flex: 1, child: Center()),
+                  ],
                 ),
               )),
           Expanded(

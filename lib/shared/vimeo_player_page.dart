@@ -50,6 +50,7 @@ class _VimeoPlayerPageState extends State<VimeoPlayerPage> {
           Expanded(
               flex: 1,
               child: Container(
+                margin: EdgeInsets.zero,
                 color: BrandColors.inspirationBackGround,
                 child: Padding(
                   padding:
@@ -91,6 +92,7 @@ class _VimeoPlayerPageState extends State<VimeoPlayerPage> {
                     checkConnection();
                   })
                 : Container(
+                    margin: EdgeInsets.zero,
                     color: BrandColors.inspirationBackGround,
                     child: PodVideoPlayer(
                       controller: controller,
