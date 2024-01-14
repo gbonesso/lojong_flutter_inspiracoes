@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
+import 'package:lojong_flutter_inspiracoes/features/article/data/datasources/article_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/data/datasource/quote_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/providers/quote_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/providers/video_provider.dart';
@@ -14,7 +15,7 @@ final log = Logger('Logger');
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  //Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((LogRecord rec) {
     debugPrint('${rec.level.name}: ${rec.time}: ${rec.message}');
   });
@@ -33,6 +34,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => QuoteProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Lojong Test",
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -56,64 +58,62 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   @override
-  void initState() {
-    super.initState();
-    // Provider.of<ArticleProvider>(context, listen: false)
-    //     .eitherFailureOrArticleList(page: 1);
-    Provider.of<VideoProvider>(context, listen: false)
-        .eitherFailureOrVideoList(page: 1);
-    // Provider.of<QuoteProvider>(context, listen: false)
-    //     .eitherFailureOrQuotesPage(page: 1);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton.icon(
-                icon: const Icon(Icons.visibility),
-                label: Text('Inspirações'),
-                onPressed: () {
-                  // Provider.of<ArticleProvider>(context, listen: false)
-                  //     .eitherFailureOrArticleList(page: 1);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const InspirationPage()),
-                  );
-                },
-              ),
-              // ElevatedButton.icon(
-              //   icon: const Icon(Icons.visibility),
-              //   label: Text('getVideoList'),
-              //   onPressed: () async {
-              //     final videoRemoteDataSource =
-              //         VideoRemoteDataSourceImpl(dio: BaseDio().dio);
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton.icon(
+              icon: const Icon(Icons.visibility),
+              label: Text('Inspirações'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const InspirationPage()),
+                );
+              },
+            ),
+            // ElevatedButton.icon(
+            //   icon: const Icon(Icons.visibility),
+            //   label: Text('getVideoList'),
+            //   onPressed: () async {
+            //     final videoRemoteDataSource =
+            //         VideoRemoteDataSourceImpl(dio: BaseDio().dio);
 
-              //     final videoList =
-              //         await videoRemoteDataSource.getVideoList(page: 1);
-              //     log.info(videoList);
-              //   },
-              // ),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.visibility),
-                label: Text('getQuoteList'),
-                onPressed: () async {
-                  log.info('getQuoteList Button pressed...');
-                  final quoteRemoteDataSource =
-                      QuoteRemoteDataSourceImpl(dio: BaseDio().dio);
+            //     final videoList =
+            //         await videoRemoteDataSource.getVideoList(page: 1);
+            //     log.info(videoList);
+            //   },
+            // ),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.visibility),
+              label: Text('getQuoteList'),
+              onPressed: () async {
+                log.info('getQuoteList Button pressed...');
+                final quoteRemoteDataSource =
+                    QuoteRemoteDataSourceImpl(dio: BaseDio().dio);
 
-                  final quotesPage =
-                      await quoteRemoteDataSource.getQuotesPage(page: 1);
-                  log.info(quotesPage.toJson());
-                },
-              ),
-            ],
-          ),
+                final quotesPage =
+                    await quoteRemoteDataSource.getQuotesPage(page: 1);
+                log.info(quotesPage.toJson());
+              },
+            ),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.visibility),
+              label: Text('getArticleContent'),
+              onPressed: () async {
+                log.info('getArticleContent Button pressed...');
+                final articleRemoteDataSource =
+                    ArticleRemoteDataSourceImpl(dio: BaseDio().dio);
+
+                final articleContent = await articleRemoteDataSource
+                    .getArticleContent(articleId: 11);
+                log.info(articleContent!.toJson());
+              },
+            ),
+          ],
         ),
       ),
     );

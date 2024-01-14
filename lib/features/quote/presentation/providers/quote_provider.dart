@@ -29,7 +29,19 @@ class QuoteProvider extends ChangeNotifier {
       },
       (newQuotesPage) {
         quotesPage = newQuotesPage;
-        quoteList.addAll(quotesPage!.quotesList);
+        for (final quote in quotesPage!.quotesList) {
+          log.info('quote: ${quotesPage!.currentPage} - ${quote.id}');
+          // Check for duplicates
+          if (quoteList
+              .where((quoteInList) => (quoteInList.id == quote.id))
+              .isEmpty) {
+            quoteList.add(quote);
+          } else {
+            log.info('quote already in list...');
+          }
+        }
+
+        //quoteList.addAll(quotesPage!.quotesList);
         notifyListeners();
       },
     );

@@ -1,8 +1,11 @@
 import 'package:dartz/dartz.dart';
+import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/business/repositories/video_repository.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/data/datasource/video_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/data/models/video_model.dart';
+
+final log = Logger('Logger');
 
 class VideoRepositoryImpl implements VideoRepository {
   final VideoRemoteDataSource remoteDataSource;
@@ -40,8 +43,13 @@ class VideoRepositoryImpl implements VideoRepository {
   Future<Either<Failure, List<VideoModel>>> getVideoList({
     required int page,
   }) async {
-    final videoList = await remoteDataSource.getVideoList(page: page);
-    return Right(videoList);
+    try {
+      final videoList = await remoteDataSource.getVideoList(page: page);
+      return Right(videoList);
+    } on ServerFailure catch (failure) {
+      log.info('getVideoList: ServerFailure: ${failure.errorMessage}');
+      return Left(failure);
+    }
     //return Left(ServerFailure(errorMessage: 'This is a server exception'));
   }
 }

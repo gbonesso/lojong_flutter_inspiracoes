@@ -1,6 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_file_store/dio_cache_interceptor_file_store.dart';
+import 'package:lojong_flutter_inspiracoes/shared/conectivity_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BaseDio {
@@ -21,17 +23,24 @@ class BaseDio {
 
       var cacheOptions = CacheOptions(
         store: cacheStore,
-        //hitCacheOnErrorExcept: [], // for offline behaviour
+        policy: CachePolicy.forceCache,
+        priority: CachePriority.high,
+        hitCacheOnErrorExcept: [401, 404], // for offline behaviour
         // Overrides any HTTP directive to delete entry past this duration.
         // Useful only when origin server has no cache config or custom behaviour is desired.
         // Defaults to [null].
         maxStale: const Duration(days: 7),
+        //policy: CachePolicy.request, // Not necessary, request is the default
       );
 
       dio.interceptors.add(
         DioCacheInterceptor(options: cacheOptions),
       );
     });
+
+    // Para tratar rede indisponível...
+    // Connectivity connectivity = Connectivity();
+    // dio.interceptors.add(ConnectivityInterceptor(connectivity));
 
     dio.interceptors.add(
       InterceptorsWrapper(

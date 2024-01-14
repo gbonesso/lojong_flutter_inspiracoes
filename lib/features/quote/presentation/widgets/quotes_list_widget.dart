@@ -7,12 +7,22 @@ import 'package:provider/provider.dart';
 
 final log = Logger('Logger');
 
-class QuotesListWidget extends StatelessWidget {
+class QuotesListWidget extends StatefulWidget {
   const QuotesListWidget({
     super.key,
   });
 
-  //Color(0xFFE09090)
+  @override
+  State<QuotesListWidget> createState() => _QuotesListWidgetState();
+}
+
+class _QuotesListWidgetState extends State<QuotesListWidget> {
+  @override
+  void initState() {
+    Provider.of<QuoteProvider>(context, listen: false)
+        .eitherFailureOrQuotesPage(page: 1);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +53,10 @@ class QuotesListWidget extends StatelessWidget {
                         ));
                       }
                     }
-                    return QuoteCard(quote: quoteProvider.quoteList[index]);
+                    return QuoteCard(
+                      quote: quoteProvider.quoteList[index],
+                      index: index,
+                    );
                   },
                 ),
               ),

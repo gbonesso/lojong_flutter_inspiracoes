@@ -25,8 +25,9 @@ class QuoteRemoteDataSourceImpl implements QuoteRemoteDataSource {
       final response = await dio.get(
         'https://applojong.com/api/quotes2?page=$page',
       );
-      log.info('response: $response');
-      if (response.statusCode == 200) {
+      log.fine('response: $response');
+      log.info('getQuotesPage:response.statusCode: ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 304) {
         log.info('response.data: ${response.data}');
         final rawQuoteList = response.data['list'];
         final hasMore = response.data['has_more'];
@@ -44,14 +45,24 @@ class QuoteRemoteDataSourceImpl implements QuoteRemoteDataSource {
           hasMore: hasMore,
           currentPage: currentPage,
           lastPage: lastPage,
-          nextPage: nextPage,
+          nextPage: hasMore ? nextPage : -1,
           quotesList: quotesList,
         );
       } else {
         //throw ServerException();
       }
     } on DioException catch (e) {
-      log.info(e);
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        log.info(e.response!.data);
+        log.info(e.response!.headers);
+        log.info(e.response!.requestOptions);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        log.info(e.requestOptions);
+        log.info(e.message);
+      }
     }
 
     return Future.value(quotesPageModel);

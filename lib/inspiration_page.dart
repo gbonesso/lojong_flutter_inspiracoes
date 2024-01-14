@@ -5,7 +5,7 @@ import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
 import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/widgets/articles_list_widget.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/widgets/quotes_list_widget.dart';
-import 'package:lojong_flutter_inspiracoes/features/video/presentation/widgets/articles_list_widget.dart';
+import 'package:lojong_flutter_inspiracoes/features/video/presentation/widgets/videos_list_widget.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:lojong_flutter_inspiracoes/shared/widget/section_selection_widget.dart';
 
