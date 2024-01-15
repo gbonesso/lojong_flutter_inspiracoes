@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/entities/quote_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/business/entities/quotes_page_entity.dart';
@@ -6,6 +7,8 @@ import 'package:lojong_flutter_inspiracoes/features/quote/business/usecases/get_
 import 'package:lojong_flutter_inspiracoes/features/quote/data/datasource/quote_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/data/repositories/quote_repository_impl.dart';
 import 'package:lojong_flutter_inspiracoes/shared/base_dio.dart';
+
+final log = Logger('Logger');
 
 class QuoteProvider extends ChangeNotifier {
   QuotesPageEntity? quotesPage;

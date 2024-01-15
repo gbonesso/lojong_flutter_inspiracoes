@@ -2,7 +2,12 @@ import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_file_store/dio_cache_interceptor_file_store.dart';
+import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io' show Platform;
+
+final log = Logger('Logger');
 
 class BaseDio {
   static final BaseDio _singleton = BaseDio._internal();
@@ -56,6 +61,13 @@ class BaseDio {
       ),
     );
 
-    dio.interceptors.add(ChuckerDioInterceptor());
+    log.info('kReleaseMode: $kReleaseMode');
+    if (Platform.isIOS) {
+      dio.interceptors.add(ChuckerDioInterceptor());
+    } else {
+      if (Platform.isAndroid && !kReleaseMode) {
+        dio.interceptors.add(ChuckerDioInterceptor());
+      }
+    }
   }
 }

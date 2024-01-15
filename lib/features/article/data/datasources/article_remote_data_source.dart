@@ -23,6 +23,10 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
     ArticlesPageModel? articlesPageModel;
     List<ArticleModel> articlesList = [];
 
+    for (final interceptor in dio.interceptors) {
+      log.info('interceptor: $interceptor');
+    }
+
     try {
       final response = await dio.get(
         'https://applojong.com/api/articles2?page=$page',

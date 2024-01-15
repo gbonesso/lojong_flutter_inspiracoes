@@ -1,4 +1,5 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
@@ -47,7 +48,9 @@ void main() {
           scaffoldBackgroundColor: BrandColors.inspirationBackGround,
         ),
         home: const MainApp(),
-        navigatorObservers: [ChuckerFlutter.navigatorObserver],
+        navigatorObservers: kReleaseMode && Platform.isAndroid
+            ? []
+            : [ChuckerFlutter.navigatorObserver],
       ),
     ),
   );

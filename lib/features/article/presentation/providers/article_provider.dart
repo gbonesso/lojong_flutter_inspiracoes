@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/core/errors/failure.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/business/entities/article_content_entity.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/business/entities/article_entity.dart';
@@ -8,6 +9,8 @@ import 'package:lojong_flutter_inspiracoes/features/article/business/usecases/ge
 import 'package:lojong_flutter_inspiracoes/features/article/data/datasources/article_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/data/repositories/article_repository_impl.dart';
 import 'package:lojong_flutter_inspiracoes/shared/base_dio.dart';
+
+final log = Logger('Logger');
 
 class ArticleProvider extends ChangeNotifier {
   ArticlesPageEntity? articlesPage;
