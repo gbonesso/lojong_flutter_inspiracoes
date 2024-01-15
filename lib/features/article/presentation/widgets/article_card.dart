@@ -26,7 +26,7 @@ class ArticleCard extends StatelessWidget {
     // Determine if we should use mobile layout or not, 600 here is
     // a common breakpoint for a typical 7-inch tablet.
     final bool useMobileLayout = shortestSide < 600;
-    log.info('shortestSide: $shortestSide');
+    log.fine('shortestSide: $shortestSide');
 
     return Center(
       child: Card(

@@ -28,7 +28,7 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<QuoteProvider>(builder: (context, quoteProvider, child) {
-      if (quoteProvider.error) {
+      if (quoteProvider.error && quoteProvider.lastPageRequested == 1) {
         if (quoteProvider.failure != null) {
           if (quoteProvider.failure!.errorMessage == "Sem conectividade") {
             return NoConectivityWidget(onTap: () {
@@ -50,11 +50,16 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
                       (quoteProvider.quotesPage!.hasMore ? 1 : 0),
                   itemBuilder: (context, index) {
                     log.info(
-                        'quote: building index: $index - page: ${quoteProvider.quotesPage!.currentPage}');
+                      'quote: building index: $index - '
+                      'page: ${quoteProvider.quotesPage!.currentPage} '
+                      'has_more: ${quoteProvider.quotesPage!.hasMore} ',
+                    );
                     // Chegando próximo ao final da lista, buscar mais citações
                     if (index == quoteProvider.quoteList.length - 5) {
-                      quoteProvider.eitherFailureOrQuotesPage(
-                          page: quoteProvider.quotesPage!.nextPage);
+                      if (quoteProvider.quotesPage!.hasMore) {
+                        quoteProvider.eitherFailureOrQuotesPage(
+                            page: quoteProvider.quotesPage!.nextPage);
+                      }
                     }
                     if (index == quoteProvider.quoteList.length) {
                       if (quoteProvider.error) {
@@ -85,7 +90,12 @@ class _QuotesListWidgetState extends State<QuotesListWidget> {
           ],
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       }
     });
   }

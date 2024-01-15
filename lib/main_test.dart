@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:lojong_flutter_inspiracoes/core/const/brand_colors.dart';
+import 'package:lojong_flutter_inspiracoes/features/article/data/datasources/article_remote_data_source.dart';
 import 'package:lojong_flutter_inspiracoes/features/quote/presentation/providers/quote_provider.dart';
 import 'package:lojong_flutter_inspiracoes/features/video/presentation/providers/video_provider.dart';
-import 'package:lojong_flutter_inspiracoes/inspiration_page.dart';
 import 'package:lojong_flutter_inspiracoes/features/article/presentation/providers/article_provider.dart';
+import 'package:lojong_flutter_inspiracoes/shared/base_dio.dart';
 import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
 
@@ -61,26 +62,23 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  Future<void> test() async {
+    final articleRemoteDataSource =
+        ArticleRemoteDataSourceImpl(dio: BaseDio().dio);
+
+    final articlesPage1 =
+        await articleRemoteDataSource.getArticlesPage(page: 5);
+
+    log.info(articlesPage1!.toJson());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    test();
+
+    return const Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton.icon(
-              icon: const Icon(Icons.visibility),
-              label: const Text('Teste Inspirações - Lojong'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const InspirationPage()),
-                );
-              },
-            ),
-          ],
-        ),
+        child: Text('Teste...'),
       ),
     );
   }

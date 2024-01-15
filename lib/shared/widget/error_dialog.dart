@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lojong_flutter_inspiracoes/core/const/brand_text_styles.dart';
 
 class ErrorDialog extends StatelessWidget {
   final Function onTap;
@@ -9,30 +10,54 @@ class ErrorDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 180,
-      width: 200,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Ocorreu um erro...',
-            style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+    // The equivalent of the "smallestWidth" qualifier on Android.
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+
+    // Determine if we should use mobile layout or not, 600 here is
+    // a common breakpoint for a typical 7-inch tablet.
+    final bool useMobileLayout = shortestSide < 600;
+
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            color: Colors.white,
+            child: Card(
+              elevation: 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ocorreu um erro...',
+                    style: BrandTextStyles.cardTitle.copyWith(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // Botão recarregar
+                  SizedBox(
+                    height: useMobileLayout ? 30 : 50,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFFECECEC)),
+                      ),
+                      onPressed: () {
+                        onTap();
+                      },
+                      child: Text(
+                        "Recarregar",
+                        style: BrandTextStyles.cardTitle.copyWith(fontSize: 14),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                onTap();
-              },
-              child: const Text(
-                "Recarregar",
-                style: TextStyle(fontSize: 20, color: Colors.purpleAccent),
-              )),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

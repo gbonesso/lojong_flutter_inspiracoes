@@ -38,6 +38,11 @@ class BaseDio {
     });
 
     // Para tratar rede indisponível...
+    // Não estou conseguindo fazer o catch da exceção, aparentemente
+    // o Dio também lança uma exceção de Socket.
+    // TODO: Estudar mais esse cenário. Essa implementação seria interessante
+    // porque a verificação de conectividade seria feita em um ponto único, não
+    // em todos os datasources como eu implementei.
     // Connectivity connectivity = Connectivity();
     // dio.interceptors.add(ConnectivityInterceptor(connectivity));
 

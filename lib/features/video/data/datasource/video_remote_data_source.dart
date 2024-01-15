@@ -18,6 +18,7 @@ class VideoRemoteDataSourceImpl implements VideoRemoteDataSource {
   @override
   Future<List<VideoModel>> getVideoList({required int page}) async {
     List<VideoModel> videoList = [];
+    log.fine('VideoRemoteDataSourceImpl:getVideoList:page: $page');
 
     try {
       final response = await dio.get(

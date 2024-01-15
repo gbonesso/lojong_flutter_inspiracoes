@@ -66,11 +66,14 @@ class _VideoListWidgetState extends State<VideoListWidget> {
                         ),
                       );
                     } else {
-                      return const Center(
-                          child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(),
-                      ));
+                      return Container(
+                        color: Colors.white,
+                        child: const Center(
+                            child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: CircularProgressIndicator(),
+                        )),
+                      );
                     }
                   }
                   return VideoCard(
@@ -83,7 +86,12 @@ class _VideoListWidgetState extends State<VideoListWidget> {
           ],
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       }
     });
   }

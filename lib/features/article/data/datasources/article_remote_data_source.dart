@@ -30,26 +30,30 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
       log.fine('response: $response');
       log.info('getArticlesPage:response.statusCode: ${response.statusCode}');
       if (response.statusCode == 200 || response.statusCode == 304) {
-        log.fine('response.data: ${response.data}');
-        final rawArticleList = response.data['list'];
-        final hasMore = response.data['has_more'];
-        final currentPage = response.data['current_page'];
-        final lastPage = response.data['last_page'];
-        final nextPage = response.data['next_page'];
+        if (response.data != {}) {
+          log.fine('response.data: ${response.data}');
+          final rawArticleList = response.data['list'];
+          final hasMore = response.data['has_more'];
+          final currentPage = response.data['current_page'];
+          final lastPage = response.data['last_page'];
+          final nextPage = response.data['next_page'];
 
-        for (final item in rawArticleList) {
-          log.fine(item);
-          final article = ArticleModel.fromJson(item);
-          log.fine(article.toJson());
-          articlesList.add(article);
+          for (final item in rawArticleList) {
+            log.fine(item);
+            final article = ArticleModel.fromJson(item);
+            log.fine(article.toJson());
+            articlesList.add(article);
+          }
+          articlesPageModel = ArticlesPageModel(
+            hasMore: hasMore,
+            currentPage: currentPage,
+            lastPage: lastPage,
+            nextPage: hasMore ? nextPage : -1,
+            articlesList: articlesList,
+          );
+        } else {
+          throw ServerFailure(errorMessage: 'Dados vazios para página: $page');
         }
-        articlesPageModel = ArticlesPageModel(
-          hasMore: hasMore,
-          currentPage: currentPage,
-          lastPage: lastPage,
-          nextPage: hasMore ? nextPage : -1,
-          articlesList: articlesList,
-        );
       } else {
         throw ServerFailure(
             errorMessage: 'status_code: ${response.statusCode}');
@@ -91,18 +95,21 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
       if (response.statusCode == 200 || response.statusCode == 304) {
         log.fine('response.data: ${response.data}');
 
-        articleContent = ArticleContentModel.fromJson(response.data);
-        log.fine(articleContent.toJson());
+        if (response.data != {}) {
+          articleContent = ArticleContentModel.fromJson(response.data);
+          log.fine(articleContent.toJson());
+        } else {
+          throw ServerFailure(
+              errorMessage: 'Dados vazios para articleId: $articleId');
+        }
       } else {
         throw ServerFailure(
             errorMessage: 'status_code: ${response.statusCode}');
       }
     } on DioException catch (e) {
       final connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        log.info('Sem conectividade...');
-        throw ServerFailure(errorMessage: 'Sem conectividade');
-      }
+      log.info('e.response!.requestOptions : ${e.response!.requestOptions}');
+
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
       if (e.response != null) {
@@ -114,7 +121,14 @@ class ArticleRemoteDataSourceImpl implements ArticleRemoteDataSource {
         log.info(e.requestOptions);
         log.info(e.message);
       }
-      throw ServerFailure(errorMessage: 'Erro: ${e.message}');
+      if (connectivityResult == ConnectivityResult.none) {
+        log.info('Sem conectividade...');
+        throw ServerFailure(errorMessage: 'Sem conectividade');
+      } else {
+        throw ServerFailure(errorMessage: 'Erro: ${e.message}');
+      }
+    } on Exception catch (otherExceptions) {
+      log.info('otherExceptions: $otherExceptions');
     }
 
     return Future.value(articleContent);

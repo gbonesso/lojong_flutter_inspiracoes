@@ -49,13 +49,19 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
                 itemCount: articleProvider.articleList.length +
                     (articleProvider.articlesPage!.hasMore ? 1 : 0),
                 itemBuilder: (context, index) {
-                  log.info('articles - building index: $index '
-                      'list length: ${articleProvider.articleList.length} '
-                      'has_more: ${articleProvider.articlesPage!.hasMore} ');
+                  log.info(
+                    'articles - building index: $index '
+                    'page: ${articleProvider.articlesPage!.currentPage} '
+                    'next_page: ${articleProvider.articlesPage!.nextPage} '
+                    'list length: ${articleProvider.articleList.length} '
+                    'has_more: ${articleProvider.articlesPage!.hasMore} ',
+                  );
                   // Chegando próximo ao final da lista, buscar mais artigos
                   if (index == articleProvider.articleList.length - 5) {
-                    articleProvider.eitherFailureOrArticlesPage(
-                        page: articleProvider.articlesPage!.nextPage);
+                    if (articleProvider.articlesPage!.hasMore) {
+                      articleProvider.eitherFailureOrArticlesPage(
+                          page: articleProvider.articlesPage!.nextPage);
+                    }
                   }
                   if (index == articleProvider.articleList.length) {
                     if (articleProvider.error) {
@@ -85,7 +91,12 @@ class _ArticlesListWidgetState extends State<ArticlesListWidget> {
           ],
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return Container(
+          color: Colors.white,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
       }
     });
   }
