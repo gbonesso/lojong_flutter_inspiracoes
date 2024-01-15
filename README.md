@@ -1,7 +1,7 @@
 # Teste para a Lojong
 
 Screenshots Nexus One
-<img src="[Screenshot_1705336418](https://github.com/gbonesso/lojong_flutter_inspiracoes/assets/11787066/1ab5d8e7-1aca-4753-b3a1-12222682df4c) alt="drawing" width="100"/>
+<img src="https://github.com/gbonesso/lojong_flutter_inspiracoes/assets/11787066/1ab5d8e7-1aca-4753-b3a1-12222682df4c" alt="drawing" width="100"/>
 ![Screenshot_1705336418](https://github.com/gbonesso/lojong_flutter_inspiracoes/assets/11787066/1ab5d8e7-1aca-4753-b3a1-12222682df4c)
 ![Screenshot_1705336602](https://github.com/gbonesso/lojong_flutter_inspiracoes/assets/11787066/85e9a48c-6fab-494a-a7bd-d6d8df4fc32f)
 ![Screenshot_1705336560](https://github.com/gbonesso/lojong_flutter_inspiracoes/assets/11787066/1299fc11-c0c0-41fb-b68a-5a73d1f422e4)
